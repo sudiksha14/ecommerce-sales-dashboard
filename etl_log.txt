@@ -1,0 +1,31 @@
+2026-06-06 19:59:58,544 | INFO | ============================================================
+2026-06-06 19:59:58,544 | INFO | ETL Pipeline started
+2026-06-06 19:59:58,545 | INFO | ============================================================
+2026-06-06 19:59:58,818 | INFO | Loaded orders: 99,441 rows
+2026-06-06 19:59:58,984 | INFO | Loaded order_items: 112,650 rows
+2026-06-06 19:59:59,017 | INFO | Loaded products: 32,951 rows
+2026-06-06 19:59:59,130 | INFO | Loaded customers: 99,441 rows
+2026-06-06 19:59:59,135 | INFO | Loaded sellers: 3,095 rows
+2026-06-06 19:59:59,205 | INFO | Loaded payments: 103,886 rows
+2026-06-06 19:59:59,432 | INFO | Loaded reviews: 99,224 rows
+2026-06-06 19:59:59,782 | INFO | Loaded geo: 1,000,163 rows
+2026-06-06 19:59:59,785 | INFO | Loaded category_xlat: 71 rows
+2026-06-06 19:59:59,800 | WARNING | DQ | orders has nulls: {'order_approved_at': np.int64(160), 'order_delivered_carrier_date': np.int64(1783), 'order_delivered_customer_date': np.int64(2965)}
+2026-06-06 19:59:59,946 | WARNING | DQ | products has nulls: {'product_category_name': np.int64(610), 'product_name_lenght': np.int64(610), 'product_description_lenght': np.int64(610), 'product_photos_qty': np.int64(610), 'product_weight_g': np.int64(2), 'product_length_cm': np.int64(2), 'product_height_cm': np.int64(2), 'product_width_cm': np.int64(2)}
+2026-06-06 20:00:00,047 | WARNING | DQ | reviews has nulls: {'review_comment_title': np.int64(87656), 'review_comment_message': np.int64(58247)}
+2026-06-06 20:00:00,421 | WARNING | DQ | geo has 261831 duplicate rows
+2026-06-06 20:00:00,422 | INFO | DQ check complete - 4 issue(s) found
+2026-06-06 20:00:00,459 | INFO | DQ fixes applied
+2026-06-06 20:00:00,509 | INFO | dim_date: 774 rows
+2026-06-06 20:00:00,516 | INFO | dim_customer: 99,441 rows
+2026-06-06 20:00:00,535 | INFO | dim_product: 32,951 rows
+2026-06-06 20:00:00,539 | INFO | dim_seller: 3,095 rows
+2026-06-06 20:00:00,542 | INFO | dim_geography: 19,015 rows
+2026-06-06 20:00:05,870 | INFO | fact_orders: 99,441 rows
+2026-06-06 20:00:05,885 | INFO | Saved dim_date -> data/processed\dim_date.csv (774 rows)
+2026-06-06 20:00:06,012 | INFO | Saved dim_customer -> data/processed\dim_customer.csv (99,441 rows)
+2026-06-06 20:00:06,085 | INFO | Saved dim_product -> data/processed\dim_product.csv (32,951 rows)
+2026-06-06 20:00:06,090 | INFO | Saved dim_seller -> data/processed\dim_seller.csv (3,095 rows)
+2026-06-06 20:00:06,132 | INFO | Saved dim_geography -> data/processed\dim_geography.csv (19,015 rows)
+2026-06-06 20:00:06,630 | INFO | Saved fact_orders -> data/processed\fact_orders.csv (99,441 rows)
+2026-06-06 20:00:06,630 | INFO | ETL complete. Load CSVs into Power BI or SQL Server.
