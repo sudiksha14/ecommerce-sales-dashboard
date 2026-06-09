@@ -1,0 +1,133 @@
+================================================================
+PROJECT 1: E-COMMERCE SALES INTELLIGENCE DASHBOARD
+DAX Measures — Copy into Power BI one at a time
+Table: fact_orders (create all measures here)
+================================================================
+
+----------------------------------------------------------------
+MEASURE 1: Total Revenue
+----------------------------------------------------------------
+Total Revenue = 
+SUM(fact_orders[total_payment])
+
+----------------------------------------------------------------
+MEASURE 2: Total Orders
+----------------------------------------------------------------
+Total Orders = 
+COUNTROWS(fact_orders)
+
+----------------------------------------------------------------
+MEASURE 3: Average Order Value
+----------------------------------------------------------------
+Avg Order Value = 
+DIVIDE(
+    SUM(fact_orders[total_payment]),
+    COUNTROWS(fact_orders),
+    0
+)
+
+----------------------------------------------------------------
+MEASURE 4: Late Order Rate %
+----------------------------------------------------------------
+Late Order Rate % = 
+DIVIDE(
+    CALCULATE(COUNTROWS(fact_orders), fact_orders[is_late] = 1),
+    COUNTROWS(fact_orders),
+    0
+) * 100
+
+----------------------------------------------------------------
+MEASURE 5: Avg Delivery Days
+----------------------------------------------------------------
+Avg Delivery Days = 
+AVERAGE(fact_orders[delivery_days])
+
+----------------------------------------------------------------
+MEASURE 6: Avg Review Score
+----------------------------------------------------------------
+Avg Review Score = 
+AVERAGE(fact_orders[avg_review_score])
+
+----------------------------------------------------------------
+MEASURE 7: Revenue YoY % Change
+(Year-over-Year growth using time intelligence)
+----------------------------------------------------------------
+Revenue YoY % = 
+VAR CurrentRevenue = SUM(fact_orders[total_payment])
+VAR PriorYearRevenue = 
+    CALCULATE(
+        SUM(fact_orders[total_payment]),
+        SAMEPERIODLASTYEAR(dim_date[full_date])
+    )
+RETURN
+    DIVIDE(
+        CurrentRevenue - PriorYearRevenue,
+        PriorYearRevenue,
+        0
+    ) * 100
+
+----------------------------------------------------------------
+MEASURE 8: Rolling 30-Day Revenue
+(Smoothed revenue trend — removes daily noise)
+----------------------------------------------------------------
+Rolling 30D Revenue = 
+CALCULATE(
+    SUM(fact_orders[total_payment]),
+    DATESINPERIOD(
+        dim_date[full_date],
+        LASTDATE(dim_date[full_date]),
+        -30,
+        DAY
+    )
+)
+
+----------------------------------------------------------------
+MEASURE 9: KPI Flag — Late Rate Status
+(Returns "Good", "Watch", or "Critical" for conditional formatting)
+----------------------------------------------------------------
+Late Rate Status = 
+VAR LateRate = 
+    DIVIDE(
+        CALCULATE(COUNTROWS(fact_orders), fact_orders[is_late] = 1),
+        COUNTROWS(fact_orders),
+        0
+    ) * 100
+RETURN
+    SWITCH(
+        TRUE(),
+        LateRate <= 5,   "Good",
+        LateRate <= 10,  "Watch",
+        "Critical"
+    )
+
+----------------------------------------------------------------
+MEASURE 10: Revenue MTD
+(Month-to-date revenue — resets at start of each month)
+----------------------------------------------------------------
+Revenue MTD = 
+CALCULATE(
+    SUM(fact_orders[total_payment]),
+    DATESMTD(dim_date[full_date])
+)
+
+================================================================
+HOW TO CREATE EACH MEASURE IN POWER BI:
+1. Click on fact_orders table in the Data pane (right side)
+2. Go to Table tools (top ribbon) → New Measure
+3. Paste the measure formula into the formula bar
+4. Press Enter
+5. Rename the measure in the Properties pane if needed
+6. Repeat for all 10 measures
+
+FORMAT SETTINGS (set after creating each measure):
+- Total Revenue        → Currency, 2 decimal places
+- Total Orders         → Whole number
+- Avg Order Value      → Currency, 2 decimal places
+- Late Order Rate %    → Percentage, 1 decimal place
+- Avg Delivery Days    → Decimal, 1 decimal place
+- Avg Review Score     → Decimal, 2 decimal places
+- Revenue YoY %        → Percentage, 1 decimal place
+- Rolling 30D Revenue  → Currency, 2 decimal places
+- Late Rate Status     → Text (no format needed)
+- Revenue MTD          → Currency, 2 decimal places
+================================================================

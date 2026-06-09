@@ -5,6 +5,11 @@ An end-to-end business intelligence project built on the Olist Brazilian E-Comme
 
 ---
 
+## 🚀 Live Demo
+**[View Live Dashboard →](https://sudiksha-ecommerce-analytics.streamlit.app)**
+
+---
+
 ## Tech Stack
 
 | Layer | Tools |
